@@ -1,0 +1,13 @@
+# 用户使用过程中生成
+build/
+*.bak
+
+# 自定义字体目录（用户放入的字体不纳入仓库）
+font/custom/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
