@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NaoFu WT Hub 2.10 - Light</title>
+  <style>
+    @font-face {
+      font-family: "ZCOOL Kuaile";
+      src: url("../assets/CuteFount.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 110%; scrollbar-width: thin; scrollbar-color: #5b8fb9 #e2e8f0; scrollbar-gutter: stable; }
+    html::-webkit-scrollbar { width: 12px; height: 12px; }
+    html::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 6px; margin: 4px 0; }
+    html::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); border-radius: 6px; border: 3px solid #e2e8f0; min-height: 48px; }
+    html::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #5b8fb9 0%, #64748b 100%); }
+    html::-webkit-scrollbar-corner { background: #e2e8f0; border-radius: 0 0 4px 0; }
+    body {
+      font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      min-height: 100vh;
+      background: linear-gradient(165deg, #e8f4fc 0%, #d4e8f5 25%, #f0e6f5 60%, #ffe8f0 100%);
+      padding: 28px;
+      color: #2d3748;
+    }
+    .container { max-width: 720px; margin: 0 auto; position: relative; }
+    .bg-paw { position: absolute; font-size: 2rem; opacity: 0.08; pointer-events: none; }
+    .bg-paw:nth-child(1) { top: 40px; left: 20px; }
+    .bg-paw:nth-child(2) { top: 120px; right: 30px; transform: rotate(-15deg); }
+    .bg-paw:nth-child(3) { bottom: 180px; left: 40px; transform: rotate(10deg); }
+    .bg-paw:nth-child(4) { bottom: 80px; right: 20px; }
+    header { text-align: center; margin-bottom: 36px; }
+    .sub { font-size: 0.88rem; color: rgba(45,55,72,0.65); text-align: center; margin-top: 30px; margin-bottom: 0; display: block; }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+      padding-top: 0.15em;
+      background: linear-gradient(90deg, #5b8fb9 0%, #b87aa3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .card {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 24px rgba(91,143,185,0.08);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      border-color: rgba(91,143,185,0.4);
+      box-shadow: 0 12px 32px rgba(91,143,185,0.12);
+    }
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #5b8fb9;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title::before { content: "🐾"; font-size: 0.85em; }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(91,143,185,0.25);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: rgba(255,255,255,0.8);
+      color: #2d3748;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #b87aa3;
+      box-shadow: 0 0 0 3px rgba(184,122,163,0.2);
+    }
+    input[type="text"]::placeholder { color: rgba(45,55,72,0.45); }
+    .mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .mode-btn {
+      padding: 20px 14px;
+      border: 1px solid rgba(91,143,185,0.2);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.92rem;
+      color: #4a5568;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mode-btn:hover {
+      background: rgba(212,232,245,0.6);
+      border-color: rgba(91,143,185,0.4);
+      transform: scale(1.02);
+      color: #2d3748;
+    }
+    .mode-btn.active {
+      background: linear-gradient(135deg, rgba(91,143,185,0.25), rgba(184,122,163,0.2));
+      border-color: #5b8fb9;
+      color: #2d3748;
+      box-shadow: 0 4px 20px rgba(91,143,185,0.15);
+    }
+    .font-list {
+      max-height: 220px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .font-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(212,232,245,0.35);
+      font-size: 0.85rem;
+      color: #2d3748;
+      transition: background 0.2s ease;
+    }
+    .font-item:hover { background: rgba(212,232,245,0.55); }
+    .font-item input { width: 18px; height: 18px; accent-color: #b87aa3; }
+    .font-num { color: #5b8fb9; min-width: 28px; font-weight: 600; }
+    .start-btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #5b8fb9, #b87aa3);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(91,143,185,0.35);
+    }
+    .start-btn:active { transform: translateY(0); }
+    .start-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .progress-bar-wrap {
+      margin-top: 14px; height: 14px; border-radius: 7px; background: rgba(91,143,185,0.15); overflow: hidden; display: none;
+    }
+    .progress-bar-wrap.visible { display: block; }
+    .progress-bar-fill {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #5b8fb9, #b87aa3); border-radius: 7px; transition: width 0.25s ease;
+    }
+    .progress-box {
+      margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(0,0,0,0.06);
+      max-height: 160px; overflow-y: auto; font-size: 0.8rem; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; white-space: pre-wrap; word-break: break-all; line-height: 1.4;
+    }
+    .progress-box:empty { display: none; }
+    .progress-box.done-ok { border: 1px solid rgba(91,143,185,0.4); }
+    .progress-box.done-err { border: 1px solid rgba(200,80,80,0.5); }
+    .font-list::-webkit-scrollbar, .progress-box::-webkit-scrollbar { width: 8px; height: 8px; }
+    .font-list::-webkit-scrollbar-track, .progress-box::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 4px; }
+    .font-list::-webkit-scrollbar-thumb, .progress-box::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); border-radius: 4px; border: 2px solid #e2e8f0; min-height: 32px; }
+    .font-list::-webkit-scrollbar-thumb:hover, .progress-box::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #5b8fb9 0%, #64748b 100%); }
+    .tip {
+      font-size: 0.8rem;
+      color: rgba(45,55,72,0.55);
+      margin-top: 20px;
+      text-align: center;
+    }
+    .font-select-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .font-select-btn {
+      padding: 10px 20px;
+      border: 1px solid rgba(91,143,185,0.4);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(91,143,185,0.2), rgba(184,122,163,0.15));
+      color: #2d3748;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .font-select-btn:hover {
+      border-color: #5b8fb9;
+      box-shadow: 0 4px 16px rgba(91,143,185,0.2);
+    }
+    .font-current { font-size: 0.88rem; color: rgba(45,55,72,0.65); }
+    .font-history-wrap { margin-top: 12px; font-size: 0.8rem; color: rgba(45,55,72,0.55); }
+    .font-history-label { display: block; margin-bottom: 6px; }
+    .font-history { display: flex; flex-wrap: wrap; gap: 6px; }
+    .font-history-item { padding: 4px 10px; border-radius: 8px; background: rgba(91,143,185,0.12); color: #5b8fb9; cursor: pointer; transition: background 0.2s ease; }
+    .font-history-item:hover { background: rgba(91,143,185,0.22); }
+
+    .step-in { opacity: 0; transform: translateY(14px); transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    body.loaded .step-in { opacity: 1; transform: translateY(0); }
+    body.loaded .step-in.step-0 { transition-delay: 0.05s; }
+    body.loaded .step-in.step-1 { transition-delay: 0.12s; }
+    body.loaded .step-in.step-2 { transition-delay: 0.2s; }
+    body.loaded .step-in.step-3 { transition-delay: 0.28s; }
+    body.loaded .step-in.step-4 { transition-delay: 0.36s; }
+    body.loaded .step-in.step-5 { transition-delay: 0.44s; }
+    .font-list-section { max-height: 520px; transition: opacity 0.3s ease, max-height 0.35s ease, margin 0.3s ease; overflow: hidden; }
+    .font-list-section.mode1-hide { opacity: 0; max-height: 0; margin-bottom: 0; pointer-events: none; }
+    .mode-hint { font-size: 0.85rem; min-height: 20px; margin: 14px 0; text-align: center; transition: opacity 0.25s ease; }
+    .mode-hint.err { color: #c53030; }
+    .mode-hint:empty { opacity: 0; }
+    .custom-font-tabs {
+      display: flex; gap: 14px; margin-bottom: 24px; justify-content: center; flex-wrap: wrap;
+    }
+    .custom-font-tabs .tab-btn {
+      flex: 1; min-width: 140px; padding: 14px 20px; border-radius: 14px; border: 1px solid rgba(91,143,185,0.3);
+      background: rgba(255,255,255,0.6); cursor: pointer; font-size: 0.95rem; font-weight: 600; color: #4a5568;
+      transition: all 0.25s ease; text-align: center;
+      font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+    }
+    .custom-font-tabs .tab-btn:hover {
+      background: rgba(212,232,245,0.6); border-color: rgba(91,143,185,0.5); color: #2d3748;
+    }
+    .custom-font-tabs .tab-btn.active {
+      background: linear-gradient(135deg, rgba(91,143,185,0.25), rgba(184,122,163,0.2)); border-color: #5b8fb9; color: #2d3748;
+      box-shadow: 0 4px 16px rgba(91,143,185,0.2);
+    }
+    .custom-font-panel {
+      overflow: hidden;
+      contain: layout paint;
+      transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .custom-font-panel:not(.active) {
+      max-height: 0; opacity: 0; margin: 0; padding: 0; pointer-events: none;
+      transform: translateY(-8px);
+    }
+    .custom-font-panel.active {
+      max-height: 5000px; opacity: 1;
+      transform: translateY(0);
+    }
+    .panel-import-placeholder {
+      padding: 40px 24px; text-align: center; color: rgba(45,55,72,0.6); font-size: 0.95rem;
+      background: rgba(255,255,255,0.5); border-radius: 16px; border: 1px dashed rgba(91,143,185,0.35);
+    }
+    .build-list { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .build-list-item {
+      display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: rgba(255,255,255,0.6); border: 1px solid rgba(91,143,185,0.2);
+      font-size: 0.92rem; color: #2d3748; transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .build-list-item-body { flex: 1; min-width: 0; }
+    .build-list-item:hover { background: rgba(212,232,245,0.5); border-color: rgba(91,143,185,0.35); }
+    .build-list-item-name { font-weight: 500; }
+    .build-list-item-meta { font-size: 0.8rem; color: rgba(45,55,72,0.65); margin-top: 4px; }
+    .build-list-item-type { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 0.72rem; margin-right: 6px; }
+    .build-list-item-type.self { background: rgba(22,163,74,0.2); color: #16a34a; }
+    .build-list-item-type.imported { background: rgba(202,138,4,0.25); color: #ca8a04; }
+    .build-list-item-type.builtin { background: rgba(124,58,237,0.2); color: #7c3aed; }
+    .build-list-item-delete { flex-shrink: 0; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(220,38,38,0.4); background: rgba(220,38,38,0.1); color: #dc2626; font-size: 0.8rem; cursor: pointer; font-family: inherit; }
+    .build-list-item-delete:hover { background: rgba(220,38,38,0.2); }
+    .build-list-empty { padding: 24px; text-align: center; color: rgba(45,55,72,0.5); font-size: 0.9rem; }
+    .build-dropdowns { display: flex; flex-direction: column; gap: 6px; }
+    .build-dropdown { border-radius: 12px; border: 1px solid rgba(91,143,185,0.2); background: rgba(255,255,255,0.5); overflow: hidden; }
+    .build-dropdown-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; font-size: 0.92rem; font-weight: 600; color: #2d3748; transition: background 0.2s ease; }
+    .build-dropdown-header:hover { background: rgba(212,232,245,0.4); }
+    .build-dropdown-header .arrow { font-size: 0.8rem; color: #5b8fb9; transition: transform 0.25s ease; }
+    .build-dropdown.open .build-dropdown-header .arrow { transform: rotate(180deg); }
+    .build-dropdown-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+    .build-dropdown.open .build-dropdown-body { max-height: 420px; }
+    .build-dropdown-body .build-list { max-height: 280px; margin: 0 8px 8px 8px; }
+    .import-selected-hint { font-size: 0.85rem; color: #5b8fb9; margin-top: 8px; margin-bottom: 4px; min-height: 1.2em; }
+    .import-actions { display: flex; flex-direction: column; gap: 10px; }
+    .import-btn { padding: 12px 18px; border-radius: 12px; border: 1px solid rgba(91,143,185,0.3); background: rgba(255,255,255,0.7); cursor: pointer; font-size: 0.95rem; color: #2d3748; transition: all 0.2s ease; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+    .import-btn:hover { background: rgba(212,232,245,0.5); border-color: rgba(91,143,185,0.5); }
+    .import-result { margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size: 0.88rem; min-height: 20px; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+    .import-result.ok { background: rgba(91,143,185,0.12); color: #2d3748; }
+    .import-result.err { background: rgba(248,113,113,0.12); color: #b91c1c; }
+    .import-font-name-wrap { margin-top: 10px; }
+    .import-font-name-wrap label { display: block; font-size: 0.88rem; color: rgba(45,55,72,0.8); margin-bottom: 6px; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; line-height: 1.5; padding-top: 4px; min-height: 1.5em; overflow: visible; }
+    .import-font-name-wrap input { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(91,143,185,0.3); font-size: 1rem; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+    .card.import-card { padding: 18px 20px; }
+    .card.import-card .card-title { margin-bottom: 12px; }
+    .game-import-card .card-title { margin-bottom: 10px; }
+    .game-import-selected { font-size: 0.9rem; color: #5b8fb9; margin-bottom: 12px; min-height: 1.4em; }
+    .game-import-path-wrap { margin-bottom: 10px; }
+    .game-import-path-wrap label { display: block; font-size: 0.88rem; color: rgba(45,55,72,0.8); margin-bottom: 6px; line-height: 1.5; }
+    .game-import-path-wrap input { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(91,143,185,0.3); font-size: 1rem; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+    .game-import-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .game-import-result { margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size: 0.88rem; min-height: 20px; }
+    .game-import-result.ok { background: rgba(91,143,185,0.12); color: #2d3748; }
+    .game-import-result.err { background: rgba(248,113,113,0.12); color: #b91c1c; }
+    .build-list-item { cursor: pointer; }
+    .build-list-item.selected-for-game { border-color: #5b8fb9; background: rgba(91,143,185,0.15); box-shadow: 0 0 0 2px rgba(91,143,185,0.25); }
+    .nf-modal-overlay { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; background: rgba(15,23,42,0.4); opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s ease; }
+    .nf-modal-overlay.show { opacity: 1; visibility: visible; }
+    .nf-modal-card { max-width: 340px; width: 100%; padding: 24px; border-radius: 20px; background: rgba(255,255,255,0.98); border: 1px solid rgba(91,143,185,0.3); box-shadow: 0 20px 48px rgba(91,143,185,0.2); transform: scale(0.92); opacity: 0; transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.22s ease; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+    .nf-modal-overlay.show .nf-modal-card { transform: scale(1); opacity: 1; }
+    .nf-modal-msg { font-size: 1rem; color: #2d3748; line-height: 1.5; margin: 0 0 20px 0; }
+    .nf-modal-btns { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+    .nf-modal-btn { padding: 10px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; font-family: inherit; transition: all 0.2s ease; }
+    .nf-modal-btn-ok { background: linear-gradient(135deg, #5b8fb9, #b87aa3); color: #fff; border-color: rgba(91,143,185,0.4); }
+    .nf-modal-btn-ok:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .nf-modal-btn-cancel { background: rgba(91,143,185,0.12); color: #4a5568; border-color: rgba(91,143,185,0.25); }
+    .nf-modal-btn-cancel:hover { background: rgba(91,143,185,0.2); }
+    .top-bar { display: flex; align-items: stretch; flex-wrap: nowrap; gap: 8px; margin-bottom: 20px; width: fit-content; }
+    .back-link { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 36px; padding: 0 14px; box-sizing: border-box; border-radius: 10px; font-size: 0.98rem; font-weight: 600; text-decoration: none; transition: all 0.25s ease; cursor: pointer; border: 1px solid transparent; background: rgba(255,255,255,0.6); color: #2d3748; font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+    .back-link:hover { background: rgba(212,232,245,0.6); border-color: rgba(91,143,185,0.3); transform: translateX(-2px); }
+    .theme-card { display: flex; align-items: stretch; gap: 6px; }
+    .theme-card .theme-btn { font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 36px; padding: 0 14px 2px 10px; box-sizing: border-box; border-radius: 10px; border: 1px solid transparent; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.25s ease; }
+    .theme-card .theme-btn.light { background: linear-gradient(135deg, rgba(91,143,185,0.25), rgba(184,122,163,0.2)); border-color: #5b8fb9; color: #2d3748; }
+    .theme-card .theme-btn.dark { background: rgba(255,255,255,0.5); border-color: rgba(91,143,185,0.2); color: #64748b; }
+    .theme-card .theme-btn.dark:hover { background: rgba(212,232,245,0.5); color: #2d3748; }
+    .theme-card a.theme-btn { text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="bg-paw">🐾</span>
+    <span class="bg-paw">🐾</span>
+    <span class="bg-paw">🐾</span>
+    <span class="bg-paw">🐾</span>
+    <header class="step-in step-0">
+      <h1>NaoFu WT Hub · Customize Font</h1>
+      <p class="sub">战争雷霆自定义字体替换工具 · 作者 NaoFu · Light</p>
+    </header>
+    <div class="step-in step-0 top-bar">
+      <a href="welcome.html" class="back-link">← 返回首页</a>
+      <div class="theme-card">
+        <button type="button" class="theme-btn light" aria-pressed="true" disabled>☀️ 亮色</button>
+        <a href="version_dark.html" class="theme-btn dark" role="button">🌙 暗色</a>
+      </div>
+    </div>
+    <div class="custom-font-tabs step-in step-0" id="customFontTabs">
+      <button type="button" class="tab-btn" data-tab="current" id="tabCurrent">当前选择（游戏字体）</button>
+      <button type="button" class="tab-btn active" data-tab="builtin" id="tabBuiltin">自制字体</button>
+      <button type="button" class="tab-btn" data-tab="import" id="tabImport">导入字体</button>
+    </div>
+
+    <div class="custom-font-panel active" id="panelBuiltin">
+    <div class="card step-in step-1">
+      <div class="card-title">项目名称（将作为 build 下文件夹名）</div>
+      <input type="text" id="projectName" placeholder="例如：奶酪体" />
+    </div>
+
+    <div class="card step-in step-1b">
+      <div class="card-title">作者名（选填，不填将显示「这个用户很神秘」）</div>
+      <input type="text" id="authorName" placeholder="例如：NaoFu" />
+    </div>
+
+    <div class="card card-font step-in step-2">
+      <div class="card-title">自定义字体</div>
+      <div class="font-select-row">
+        <button type="button" class="font-select-btn" id="btnSelectFont">选择字体</button>
+        <span class="font-current" id="fontCurrent">未选择</span>
+      </div>
+      <div class="font-history-wrap">
+        <span class="font-history-label">上次使用：</span>
+        <div class="font-history" id="fontHistory"></div>
+      </div>
+    </div>
+
+    <div class="card step-in step-3">
+      <div class="card-title">选择模式</div>
+      <div class="mode-grid" id="modeGrid">
+        <div class="mode-btn active" data-mode="1">1. 完整覆盖<br/><small>中英字符集</small></div>
+        <div class="mode-btn" data-mode="2">2. 自定义修改<br/><small>一次选多个</small></div>
+        <div class="mode-btn" data-mode="3">3. 单个修改<br/><small>选一个改一个</small></div>
+      </div>
+    </div>
+
+    <div class="mode-hint" id="modeHint"></div>
+
+    <div class="card step-in step-4">
+      <div class="font-list-section" id="fontListSection">
+        <div class="card-title">选择要替换的字体（模式 2/3 时可选）</div>
+        <div class="font-list" id="fontList">
+        <label class="font-item"><input type="checkbox" data-slot="1" /><span class="font-num">1</span> 默认常规字体 (通用文本)</label>
+        <label class="font-item"><input type="checkbox" data-slot="2" /><span class="font-num">2</span> 微软雅黑字体子集 (游戏中文)</label>
+        <label class="font-item"><input type="checkbox" data-slot="3" /><span class="font-num">3</span> Fira Sans Regular</label>
+        <label class="font-item"><input type="checkbox" data-slot="4" /><span class="font-num">4</span> Fira Sans Light</label>
+        <label class="font-item"><input type="checkbox" data-slot="5" /><span class="font-num">5</span> JetBrains Mono</label>
+        <label class="font-item"><input type="checkbox" data-slot="6" /><span class="font-num">6</span> M+ 2p (日文)</label>
+        <label class="font-item"><input type="checkbox" data-slot="7" /><span class="font-num">7</span> Nanum Gothic (韩文)</label>
+        <label class="font-item"><input type="checkbox" data-slot="8" /><span class="font-num">8</span> Open Sans Emoji</label>
+        <label class="font-item"><input type="checkbox" data-slot="9" /><span class="font-num">9</span> PT Sans Light</label>
+        <label class="font-item"><input type="checkbox" data-slot="10" /><span class="font-num">10</span> PT Sans 网络版</label>
+        <label class="font-item"><input type="checkbox" data-slot="11" /><span class="font-num">11</span> 稀有符号字体</label>
+        <label class="font-item"><input type="checkbox" data-slot="12" /><span class="font-num">12</span> Skyquake 符号</label>
+        <label class="font-item"><input type="checkbox" data-slot="13" /><span class="font-num">13</span> 飞机 HUD 字体</label>
+        <label class="font-item"><input type="checkbox" data-slot="14" /><span class="font-num">14</span> 数字风格字体</label>
+        <label class="font-item"><input type="checkbox" data-slot="15" /><span class="font-num">15</span> Apache HUD</label>
+        <label class="font-item"><input type="checkbox" data-slot="16" /><span class="font-num">16</span> F-14 HUD</label>
+        <label class="font-item"><input type="checkbox" data-slot="17" /><span class="font-num">17</span> JAS 39 鹰狮</label>
+        <label class="font-item"><input type="checkbox" data-slot="18" /><span class="font-num">18</span> MiG-29 HUD</label>
+        <label class="font-item"><input type="checkbox" data-slot="19" /><span class="font-num">19</span> Mirage 2000</label>
+        <label class="font-item"><input type="checkbox" data-slot="20" /><span class="font-num">20</span> 苏联机型 HUD</label>
+        <label class="font-item"><input type="checkbox" data-slot="21" /><span class="font-num">21</span> 黑客帝国矩阵</label>
+      </div>
+      </div>
+      <div class="progress-bar-wrap" id="progressBarWrap">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+      <div class="progress-box" id="progressLog" role="log"></div>
+      <button class="start-btn" id="startBtn">开始制作</button>
+      <button type="button" class="import-btn" id="btnOpenBuildFolder" style="margin-top:10px;display:block;">打开生成字体的目录（可以将文件打包发送给好友）</button>
+    </div>
+
+    <p class="tip step-in step-5">二次修改字体功能，尚未完成</p>
+    </div>
+
+    <div class="custom-font-panel" id="panelImport">
+      <div class="card import-card">
+        <div class="card-title">导入字体</div>
+        <div class="import-actions">
+          <button type="button" class="import-btn" id="btnImportBin">选择 .bin 文件</button>
+          <div class="import-font-name-wrap" id="importFontNameWrap" style="display:none;">
+            <label for="importFontName">字体名称（将作为 build 下文件夹名）</label>
+            <input type="text" id="importFontName" placeholder="例如：奶酪体" />
+            <div class="import-selected-hint" id="importSelectedHint" style="display:none;" role="status"></div>
+            <button type="button" class="import-btn" style="margin-top:8px;" id="btnConfirmImportBin">确认导入</button>
+          </div>
+          <button type="button" class="import-btn" id="btnImportFolder">选择文件夹</button>
+        </div>
+        <div class="import-result" id="importResult" role="status"></div>
+      </div>
+    </div>
+
+    <div class="custom-font-panel" id="panelCurrentSelect">
+      <div class="card">
+        <div class="card-title">当前所有字体文件</div>
+        <p class="sub" style="margin:0 0 12px 0;font-size:0.82rem;color:rgba(45,55,72,0.6);">点击下方分类展开，点击某一项即选中该字体用于导入游戏。</p>
+        <div class="build-dropdowns" id="buildDropdowns">
+          <div class="build-dropdown" id="buildDropdownBuiltin" data-type="builtin">
+            <div class="build-dropdown-header"><span class="build-dropdown-title">软件自带</span><span class="arrow">▼</span></div>
+            <div class="build-dropdown-body"><div class="build-list" id="buildListBuiltin"></div></div>
+          </div>
+          <div class="build-dropdown" id="buildDropdownImported" data-type="imported">
+            <div class="build-dropdown-header"><span class="build-dropdown-title">导入字体</span><span class="arrow">▼</span></div>
+            <div class="build-dropdown-body"><div class="build-list" id="buildListImported"></div></div>
+          </div>
+          <div class="build-dropdown" id="buildDropdownSelf" data-type="self">
+            <div class="build-dropdown-header"><span class="build-dropdown-title">自制字体</span><span class="arrow">▼</span></div>
+            <div class="build-dropdown-body"><div class="build-list" id="buildListSelf"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card game-import-card">
+        <div class="card-title">导入到游戏 UI 文件夹</div>
+        <div class="game-import-selected" id="gameImportSelectedFont">当前选择的字体：未选择（请在上方列表中点击一项）</div>
+        <div class="game-import-path-wrap">
+          <label for="gameImportPath">游戏根目录（支持带引号或不带引号，可手动输入或一键搜索）</label>
+          <input type="text" id="gameImportPath" placeholder="例如：D:\Games\War Thunder 或 &quot;D:\Program Files\Steam\steamapps\common\War Thunder&quot;" />
+        </div>
+        <div class="game-import-actions">
+          <button type="button" class="import-btn" id="btnSearchGamePath">一键搜索游戏路径</button>
+          <button type="button" class="import-btn" id="btnImportToGame">导入到游戏</button>
+          <button type="button" class="import-btn" id="btnRestoreDefaultFont">恢复默认字体</button>
+        </div>
+        <div class="game-import-result" id="gameImportResult" role="status"></div>
+      </div>
+    </div>
+  </div>
+  <div id="nf-modal-overlay" class="nf-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="nf-modal-card">
+      <p class="nf-modal-msg" id="nf-modal-msg"></p>
+      <div class="nf-modal-btns" id="nf-modal-btns">
+        <button type="button" class="nf-modal-btn nf-modal-btn-cancel" id="nf-modal-cancel">取消</button>
+        <button type="button" class="nf-modal-btn nf-modal-btn-ok" id="nf-modal-ok">确定</button>
+      </div>
+    </div>
+  </div>
+  <script>
+(function(){
+  try { localStorage.setItem('nf_wt_font_theme', 'light'); } catch (e) {}
+  (function(){
+    var overlay = document.getElementById('nf-modal-overlay');
+    var msgEl = document.getElementById('nf-modal-msg');
+    var btnsEl = document.getElementById('nf-modal-btns');
+    var btnOk = document.getElementById('nf-modal-ok');
+    var btnCancel = document.getElementById('nf-modal-cancel');
+    var _onOk = null, _onCancel = null;
+    function closeModal() { if (overlay) { overlay.classList.remove('show'); overlay.setAttribute('aria-hidden', 'true'); } }
+    function doConfirm(ok) { closeModal(); if (ok && _onOk) _onOk(); else if (!ok && _onCancel) _onCancel(); _onOk = _onCancel = null; }
+    if (btnOk) btnOk.addEventListener('click', function(){ doConfirm(true); });
+    if (btnCancel) btnCancel.addEventListener('click', function(){ doConfirm(false); });
+    if (overlay) overlay.addEventListener('click', function(e){ if (e.target === overlay) doConfirm(false); });
+    window.nfAlert = function(message) {
+      if (!msgEl || !btnsEl || !btnCancel || !btnOk) return;
+      msgEl.textContent = message || '';
+      btnCancel.style.display = 'none';
+      btnOk.textContent = '确定';
+      _onOk = function(){};
+      _onCancel = null;
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden', 'false');
+    };
+    window.nfConfirm = function(message, onOk, onCancel) {
+      if (!msgEl || !btnsEl || !btnCancel || !btnOk) { if (onCancel) onCancel(); return; }
+      msgEl.textContent = message || '';
+      btnCancel.style.display = '';
+      btnOk.textContent = '确定';
+      _onOk = onOk || null;
+      _onCancel = onCancel || null;
+      overlay.classList.add('show');
+      overlay.setAttribute('aria-hidden', 'false');
+    };
+  })();
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ document.body.classList.add('loaded'); }); });
+  (function(){
+    var tabBuiltin = document.getElementById('tabBuiltin');
+    var tabImport = document.getElementById('tabImport');
+    var tabCurrent = document.getElementById('tabCurrent');
+    var panelBuiltin = document.getElementById('panelBuiltin');
+    var panelImport = document.getElementById('panelImport');
+    var panelCurrentSelect = document.getElementById('panelCurrentSelect');
+    var buildListBuiltin = document.getElementById('buildListBuiltin');
+    var buildListImported = document.getElementById('buildListImported');
+    var buildListSelf = document.getElementById('buildListSelf');
+    function renderBuildSubList(container, items, typeKey) {
+      if (!container) return;
+      container.innerHTML = '';
+      if (!items || items.length === 0) {
+        container.innerHTML = '<div class="build-list-empty">暂无</div>';
+        return;
+      }
+      var typeLabel = { self: '自己做的', imported: '导入的', builtin: '软件自带' };
+      items.forEach(function(item) {
+        var div = document.createElement('div');
+        div.className = 'build-list-item';
+        div.setAttribute('data-type', typeKey);
+        div.setAttribute('data-name', item.name || '');
+        var body = document.createElement('div');
+        body.className = 'build-list-item-body';
+        var nameEl = document.createElement('div');
+        nameEl.className = 'build-list-item-name';
+        nameEl.textContent = item.name || '';
+        var metaEl = document.createElement('div');
+        metaEl.className = 'build-list-item-meta';
+        var typeSpan = document.createElement('span');
+        typeSpan.className = 'build-list-item-type ' + (item.type || 'imported');
+        typeSpan.textContent = typeLabel[item.type] || typeLabel.imported;
+        metaEl.appendChild(typeSpan);
+        if (item.projectName) { var p = document.createElement('span'); p.textContent = '项目：' + item.projectName; metaEl.appendChild(p); }
+        if (item.author) { var a = document.createElement('span'); a.textContent = ' · 作者：' + item.author; metaEl.appendChild(a); }
+        body.appendChild(nameEl);
+        body.appendChild(metaEl);
+        div.appendChild(body);
+        if (typeKey === 'imported' || typeKey === 'self') {
+          var btnDel = document.createElement('button');
+          btnDel.type = 'button';
+          btnDel.className = 'build-list-item-delete';
+          btnDel.textContent = '删除';
+          btnDel.setAttribute('data-type', typeKey);
+          btnDel.setAttribute('data-name', item.name || '');
+          div.appendChild(btnDel);
+        }
+        container.appendChild(div);
+      });
+    }
+    function refreshBuildList() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.GetBuildFolderInfo !== 'function') {
+          var empty = '<div class="build-list-empty">无法读取 build 目录，请确保在 Launcher 中打开。</div>';
+          if (buildListBuiltin) buildListBuiltin.innerHTML = empty;
+          if (buildListImported) buildListImported.innerHTML = empty;
+          if (buildListSelf) buildListSelf.innerHTML = empty;
+          return;
+        }
+        var json = bridge.GetBuildFolderInfo();
+        var items = JSON.parse(json || '[]');
+        var byType = { builtin: [], imported: [], self: [] };
+        items.forEach(function(item) {
+          var t = item.type || 'imported';
+          if (byType[t]) byType[t].push(item);
+        });
+        renderBuildSubList(buildListBuiltin, byType.builtin, 'builtin');
+        renderBuildSubList(buildListImported, byType.imported, 'imported');
+        renderBuildSubList(buildListSelf, byType.self, 'self');
+        var titleBuiltin = document.querySelector('#buildDropdownBuiltin .build-dropdown-title');
+        var titleImported = document.querySelector('#buildDropdownImported .build-dropdown-title');
+        var titleSelf = document.querySelector('#buildDropdownSelf .build-dropdown-title');
+        if (titleBuiltin) titleBuiltin.textContent = '软件自带 (' + (byType.builtin ? byType.builtin.length : 0) + ')';
+        if (titleImported) titleImported.textContent = '导入字体 (' + (byType.imported ? byType.imported.length : 0) + ')';
+        if (titleSelf) titleSelf.textContent = '自制字体 (' + (byType.self ? byType.self.length : 0) + ')';
+        if (selectedFontForGame) {
+          document.querySelectorAll('.build-list-item').forEach(function(el) {
+            if (el.getAttribute('data-type') === selectedFontForGame.type && el.getAttribute('data-name') === selectedFontForGame.name) el.classList.add('selected-for-game');
+          });
+        }
+      } catch (e) {
+        var err = '<div class="build-list-empty">读取失败：' + (e.message || e) + '</div>';
+        if (buildListBuiltin) buildListBuiltin.innerHTML = err;
+        if (buildListImported) buildListImported.innerHTML = err;
+        if (buildListSelf) buildListSelf.innerHTML = err;
+      }
+    }
+    document.querySelectorAll('.build-dropdown').forEach(function(dd) {
+      var h = dd && dd.querySelector('.build-dropdown-header');
+      if (h) h.addEventListener('click', function() { dd.classList.toggle('open'); });
+    });
+    var selectedFontForGame = null;
+    var gameImportSelectedFont = document.getElementById('gameImportSelectedFont');
+    var gameImportPath = document.getElementById('gameImportPath');
+    var gameImportResult = document.getElementById('gameImportResult');
+    var btnSearchGamePath = document.getElementById('btnSearchGamePath');
+    var btnImportToGame = document.getElementById('btnImportToGame');
+    var btnRestoreDefaultFont = document.getElementById('btnRestoreDefaultFont');
+    function updateGameImportSelectedDisplay() {
+      if (!gameImportSelectedFont) return;
+      if (selectedFontForGame) gameImportSelectedFont.textContent = '当前选择的字体：' + selectedFontForGame.name;
+      else gameImportSelectedFont.textContent = '当前选择的字体：未选择（请在上方列表中点击一项）';
+    }
+    function refreshGamePathInput() {
+      if (!gameImportPath) return;
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (bridge && typeof bridge.GetSavedGamePath === 'function') gameImportPath.value = bridge.GetSavedGamePath() || '';
+      } catch (e) {}
+    }
+    document.getElementById('buildDropdowns').addEventListener('click', function(e) {
+      var delBtn = e.target && e.target.classList && e.target.classList.contains('build-list-item-delete') ? e.target : null;
+      if (delBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        var t = delBtn.getAttribute('data-type');
+        var n = delBtn.getAttribute('data-name');
+        if (!t || !n) return;
+        if (typeof nfConfirm !== 'function') return;
+        nfConfirm('是否删除该字体？', function(){
+          _doDelete(t, n);
+        }, function(){});
+        return;
+      }
+      function _doDelete(t, n) {
+        try {
+          var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+          if (!bridge || typeof bridge.DeleteFont !== 'function') { if (gameImportResult) gameImportResult.textContent = '请在 Launcher 中打开。'; return; }
+          var json = bridge.DeleteFont(t, n);
+          var r = JSON.parse(json || '{}');
+          if (r.ok) {
+            if (selectedFontForGame && selectedFontForGame.type === t && selectedFontForGame.name === n) { selectedFontForGame = null; updateGameImportSelectedDisplay(); }
+            refreshBuildList();
+            if (gameImportResult) { gameImportResult.textContent = '已删除。'; gameImportResult.style.color = ''; }
+          } else { if (gameImportResult) { gameImportResult.textContent = r.message || '删除失败'; gameImportResult.style.color = '#dc2626'; } }
+        } catch (err) { if (gameImportResult) { gameImportResult.textContent = err.message || '删除失败'; gameImportResult.style.color = '#dc2626'; } }
+        return;
+      }
+      var item = e.target && e.target.closest && e.target.closest('.build-list-item');
+      if (!item) return;
+      var type = item.getAttribute('data-type');
+      var name = item.getAttribute('data-name');
+      if (!type || !name) return;
+      selectedFontForGame = { type: type, name: name };
+      document.querySelectorAll('.build-list-item.selected-for-game').forEach(function(el) { el.classList.remove('selected-for-game'); });
+      item.classList.add('selected-for-game');
+      updateGameImportSelectedDisplay();
+    });
+    function setTab(which) {
+      tabBuiltin && tabBuiltin.classList.toggle('active', which === 'builtin');
+      tabImport && tabImport.classList.toggle('active', which === 'import');
+      tabCurrent && tabCurrent.classList.toggle('active', which === 'current');
+      panelBuiltin && panelBuiltin.classList.toggle('active', which === 'builtin');
+      panelImport && panelImport.classList.toggle('active', which === 'import');
+      panelCurrentSelect && panelCurrentSelect.classList.toggle('active', which === 'current');
+      if (which === 'current') { setTimeout(refreshBuildList, 180); setTimeout(function() { refreshGamePathInput(); updateGameImportSelectedDisplay(); }, 220); }
+    }
+    if (tabBuiltin) tabBuiltin.addEventListener('click', function(){ setTab('builtin'); });
+    if (tabImport) tabImport.addEventListener('click', function(){ setTab('import'); });
+    if (tabCurrent) tabCurrent.addEventListener('click', function(){ setTab('current'); });
+
+    var pendingBinPath = '';
+    var importFontNameWrap = document.getElementById('importFontNameWrap');
+    var importFontName = document.getElementById('importFontName');
+    var importSelectedHint = document.getElementById('importSelectedHint');
+    var importResult = document.getElementById('importResult');
+    var btnImportBin = document.getElementById('btnImportBin');
+    var btnConfirmImportBin = document.getElementById('btnConfirmImportBin');
+    var btnImportFolder = document.getElementById('btnImportFolder');
+
+    function showImportResult(ok, msg) {
+      if (!importResult) return;
+      importResult.textContent = msg || '';
+      importResult.className = 'import-result ' + (ok ? 'ok' : 'err');
+    }
+
+    if (btnImportBin) btnImportBin.addEventListener('click', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.ShowOpenBinDialog !== 'function') { showImportResult(false, '请在 Launcher 中打开。'); return; }
+        var json = bridge.ShowOpenBinDialog();
+        var r = JSON.parse(json || '{}');
+        if (r.ok && r.path) {
+          pendingBinPath = r.path;
+          if (importFontNameWrap) importFontNameWrap.style.display = 'block';
+          if (importFontName) {
+            var base = r.path.replace(/^.*[\\\/]/, '').replace(/\.bin$/i, '');
+            base = base.replace(/[\\\/:*?"<>|]/g, '').trim();
+            importFontName.value = base || '';
+            importFontName.focus();
+          }
+          var fileName = r.path.replace(/^.*[\\\/]/, '');
+          if (importSelectedHint) { importSelectedHint.textContent = '已选择：' + fileName; importSelectedHint.style.display = 'block'; }
+          showImportResult(true, '');
+        }
+      } catch (e) { showImportResult(false, e.message); }
+    });
+
+    if (btnConfirmImportBin) btnConfirmImportBin.addEventListener('click', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.ImportFontFromBin !== 'function') { showImportResult(false, '请在 Launcher 中打开。'); return; }
+        var name = (importFontName && importFontName.value) ? importFontName.value.trim() : '';
+        if (!name) { showImportResult(false, '请输入字体名称。'); return; }
+        var json = bridge.ImportFontFromBin(pendingBinPath, name);
+        var r = JSON.parse(json || '{}');
+        showImportResult(r.ok, r.message || (r.ok ? '导入成功' : '导入失败'));
+        if (r.ok) { pendingBinPath = ''; if (importFontNameWrap) importFontNameWrap.style.display = 'none'; if (importSelectedHint) { importSelectedHint.textContent = ''; importSelectedHint.style.display = 'none'; } refreshBuildList(); }
+      } catch (e) { showImportResult(false, e.message); }
+    });
+
+    if (btnImportFolder) btnImportFolder.addEventListener('click', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.ShowOpenFolderDialog !== 'function') { showImportResult(false, '请在 Launcher 中打开。'); return; }
+        var json = bridge.ShowOpenFolderDialog();
+        var r = JSON.parse(json || '{}');
+        if (!r.ok || !r.path) return;
+        if (typeof bridge.ImportFontFromFolder !== 'function') { showImportResult(false, '请在 Launcher 中打开。'); return; }
+        json = bridge.ImportFontFromFolder(r.path);
+        r = JSON.parse(json || '{}');
+        showImportResult(r.ok, r.message || (r.ok ? '导入成功' : '导入失败'));
+        if (r.ok) refreshBuildList();
+      } catch (e) { showImportResult(false, e.message); }
+    });
+
+    function showGameImportResult(ok, msg) {
+      if (!gameImportResult) return;
+      gameImportResult.textContent = msg || '';
+      gameImportResult.className = 'game-import-result ' + (ok ? 'ok' : 'err');
+    }
+    if (btnSearchGamePath) btnSearchGamePath.addEventListener('click', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.SearchWarThunderPath !== 'function') { showGameImportResult(false, '请在 Launcher 中打开。'); return; }
+        var json = bridge.SearchWarThunderPath();
+        var r = JSON.parse(json || '{}');
+        showGameImportResult(r.ok, r.message || (r.ok ? '已找到游戏路径。' : '未找到，请手动输入。'));
+        if (r.ok && r.path && gameImportPath) { gameImportPath.value = r.path; if (typeof bridge.SetSavedGamePath === 'function') bridge.SetSavedGamePath(r.path); }
+      } catch (e) { showGameImportResult(false, e.message); }
+    });
+    if (btnImportToGame) btnImportToGame.addEventListener('click', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.ImportFontToGame !== 'function') { showGameImportResult(false, '请在 Launcher 中打开。'); return; }
+        if (!selectedFontForGame) { showGameImportResult(false, '请先在上方列表中点击选择要导入的字体。'); return; }
+        var path = (gameImportPath && gameImportPath.value) ? gameImportPath.value.trim() : '';
+        var json = bridge.ImportFontToGame(selectedFontForGame.type, selectedFontForGame.name, path);
+        var r = JSON.parse(json || '{}');
+        showGameImportResult(r.ok, r.message || (r.ok ? '已导入到游戏。' : '导入失败'));
+      } catch (e) { showGameImportResult(false, e.message); }
+    });
+    if (btnRestoreDefaultFont) btnRestoreDefaultFont.addEventListener('click', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (!bridge || typeof bridge.RestoreDefaultFontToGame !== 'function') { showGameImportResult(false, '请在 Launcher 中打开。'); return; }
+        var path = (gameImportPath && gameImportPath.value) ? gameImportPath.value.trim() : '';
+        var json = bridge.RestoreDefaultFontToGame(path);
+        var r = JSON.parse(json || '{}');
+        showGameImportResult(r.ok, r.message || (r.ok ? '已恢复默认字体。' : '恢复失败'));
+      } catch (e) { showGameImportResult(false, e.message); }
+    });
+    if (gameImportPath) gameImportPath.addEventListener('blur', function() {
+      try {
+        var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+        if (bridge && typeof bridge.SetSavedGamePath === 'function' && gameImportPath.value.trim()) bridge.SetSavedGamePath(gameImportPath.value.trim());
+      } catch (e) {}
+    });
+  })();
+  var modeGrid = document.getElementById('modeGrid');
+  var projectName = document.getElementById('projectName');
+  var authorName = document.getElementById('authorName');
+  var fontList = document.getElementById('fontList');
+  var progressLog = document.getElementById('progressLog');
+  var startBtn = document.getElementById('startBtn');
+  var btnSelectFont = document.getElementById('btnSelectFont');
+  var fontCurrent = document.getElementById('fontCurrent');
+  var currentMode = 1;
+
+  function hasFontSelected() {
+    return fontCurrent && fontCurrent.textContent.indexOf('当前：') === 0;
+  }
+  function updateStartButtonState() {
+    if (startBtn) startBtn.disabled = !hasFontSelected();
+  }
+  function updateFontDisplay(pathOrMessage) {
+    if (!fontCurrent) return;
+    if (typeof pathOrMessage === 'string' && pathOrMessage.length > 0) {
+      var name = pathOrMessage.replace(/^.*[\\/]/, '');
+      fontCurrent.textContent = '当前：' + name;
+    } else {
+      fontCurrent.textContent = '未选择';
+    }
+    updateStartButtonState();
+  }
+
+  window.onNfFontDropped = function(path) { if (path && fontCurrent) { updateFontDisplay(path); refreshFontHistory(); } };
+
+  if (btnSelectFont) {
+    btnSelectFont.addEventListener('click', function(){
+      if (typeof chrome === 'undefined' || !chrome.webview || !chrome.webview.hostObjects || !chrome.webview.hostObjects.sync || !chrome.webview.hostObjects.sync.nfBridge) {
+        if (typeof nfAlert === 'function') nfAlert('请在 NaoFu WT Hub 2.10 中打开此页面');
+        return;
+      }
+      try {
+        var bridge = chrome.webview.hostObjects.sync.nfBridge;
+        if (typeof bridge.SelectFontAndCopy !== 'function') {
+          if (typeof nfAlert === 'function') nfAlert('选择字体需要新版本启动器。请关闭本窗口，在 Launcher 目录执行 dotnet build 后重新打开。');
+          return;
+        }
+        var json = bridge.SelectFontAndCopy();
+        var r = JSON.parse(json);
+        if (r.ok && r.sourcePath) {
+          updateFontDisplay(r.sourcePath);
+          refreshFontHistory();
+        } else if (!r.ok && r.message !== '用户取消') {
+          if (typeof nfAlert === 'function') nfAlert(r.message || '选择字体失败');
+        }
+      } catch(e) {
+        var msg = (e.message || e).toString();
+        if (typeof nfAlert !== 'function') return;
+        if (msg.indexOf('0x80020006') !== -1 || msg.indexOf('未知名称') !== -1)
+          nfAlert('选择字体需要新版本启动器。请关闭本窗口，在 Launcher 目录执行 dotnet build 后重新打开。');
+        else
+          nfAlert('选择字体失败: ' + msg);
+      }
+    });
+  }
+
+  function refreshFontHistory() {
+    var el = document.getElementById('fontHistory');
+    if (!el || typeof chrome === 'undefined' || !chrome.webview || !chrome.webview.hostObjects || !chrome.webview.hostObjects.sync || !chrome.webview.hostObjects.sync.nfBridge) return;
+    try {
+      var json = chrome.webview.hostObjects.sync.nfBridge.GetLastFontPaths();
+      var paths = JSON.parse(json || '[]');
+      el.innerHTML = '';
+      paths.forEach(function(p){
+        var name = p.replace(/^.*[\\/]/, '');
+        var span = document.createElement('span');
+        span.className = 'font-history-item';
+        span.textContent = name;
+        span.setAttribute('data-path', p);
+        span.addEventListener('click', function(){
+          var path = this.getAttribute('data-path');
+          if (!path) return;
+          try {
+            var r = JSON.parse(chrome.webview.hostObjects.sync.nfBridge.CopyFontFromPath(path));
+            if (r.ok && r.sourcePath) updateFontDisplay(r.sourcePath);
+            refreshFontHistory();
+          } catch(_) {}
+        });
+        el.appendChild(span);
+      });
+    } catch(_) {}
+  }
+  if (document.getElementById('fontHistory')) refreshFontHistory();
+  updateStartButtonState();
+
+  var fontListSection = document.getElementById('fontListSection');
+  var modeHint = document.getElementById('modeHint');
+
+  function updateFontListVisibility() {
+    if (fontListSection) fontListSection.classList.toggle('mode1-hide', currentMode === 1);
+    if (modeHint) { modeHint.textContent = ''; modeHint.className = 'mode-hint'; }
+    if (currentMode === 3 && fontList) {
+      var checked = fontList.querySelectorAll('input[type="checkbox"]:checked');
+      if (checked.length > 1) { fontList.querySelectorAll('input[type="checkbox"]').forEach(function(cb){ cb.checked = false; }); }
+    }
+  }
+
+  modeGrid.querySelectorAll('.mode-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      modeGrid.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentMode = parseInt(btn.getAttribute('data-mode'), 10);
+      updateFontListVisibility();
+    });
+  });
+
+  fontList.querySelectorAll('input[type="checkbox"]').forEach(function(cb){
+    cb.addEventListener('change', function(){
+      if (currentMode !== 3) return;
+      if (this.checked) {
+        fontList.querySelectorAll('input[type="checkbox"]').forEach(function(o){ if (o !== cb) o.checked = false; });
+      }
+    });
+  });
+
+  updateFontListVisibility();
+
+  function getSelectedSlots(){
+    var slots = [];
+    fontList.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb){
+      var n = parseInt(cb.getAttribute('data-slot'), 10);
+      if (!isNaN(n)) slots.push(n);
+    });
+    return slots.sort(function(a,b){ return a-b; });
+  }
+
+  startBtn.addEventListener('click', function(){
+    if (modeHint) { modeHint.textContent = ''; modeHint.className = 'mode-hint'; }
+    var name = (projectName.value || '').trim();
+    if (!name){ if (modeHint) { modeHint.textContent = '请输入项目名称'; modeHint.className = 'mode-hint err'; } return; }
+    if (!fontCurrent || fontCurrent.textContent.indexOf('当前：') !== 0){ if (modeHint) { modeHint.textContent = '请先选择字体'; modeHint.className = 'mode-hint err'; } return; }
+    var slots = getSelectedSlots();
+    if (currentMode === 2 && slots.length === 0){ if (modeHint) { modeHint.textContent = '模式 2 请至少选择一个字体'; modeHint.className = 'mode-hint err'; } return; }
+    if (currentMode === 3 && slots.length === 0){ if (modeHint) { modeHint.textContent = '模式 3 请选择一个字体'; modeHint.className = 'mode-hint err'; } return; }
+    if (currentMode === 3 && slots.length > 1){ if (modeHint) { modeHint.textContent = '模式 3 只能选一个字体'; modeHint.className = 'mode-hint err'; } return; }
+
+    if (typeof chrome === 'undefined' || !chrome.webview || !chrome.webview.hostObjects || !chrome.webview.hostObjects.sync || !chrome.webview.hostObjects.sync.nfBridge){
+      progressLog.textContent = '未在启动器内运行，无法调用 C 程序。请使用 NaoFu WT Hub 2.10 打开。';
+      progressLog.className = 'progress-box done-err';
+      return;
+    }
+
+    progressLog.textContent = '正在运行';
+    progressLog.className = 'progress-box';
+    var barWrap = document.getElementById('progressBarWrap');
+    var barFill = document.getElementById('progressBarFill');
+    if (barWrap) barWrap.classList.remove('visible');
+    if (barFill) barFill.style.width = '0%';
+    startBtn.disabled = true;
+    var author = (authorName && authorName.value) ? authorName.value.trim() : '';
+    if (!author) author = '这个用户很神秘';
+    try {
+      chrome.webview.hostObjects.sync.nfBridge.RunFontReplace(name, author, currentMode, JSON.stringify(currentMode === 1 ? [] : slots));
+    } catch(e) {
+      progressLog.textContent = '调用失败: ' + e.message;
+      progressLog.className = 'progress-box done-err';
+      startBtn.disabled = false;
+    }
+  });
+
+  window.onNfProgress = function(line){
+    if (!line) return;
+    var m = line.match(/^\[NaoFu:PROGRESS\]\s*(\d+),(\d+)\s*$/);
+    if (m) {
+      var cur = parseInt(m[1], 10), tot = parseInt(m[2], 10);
+      var barWrap = document.getElementById('progressBarWrap');
+      var barFill = document.getElementById('progressBarFill');
+      if (barWrap && barFill && tot > 0) {
+        barWrap.classList.add('visible');
+        barFill.style.width = Math.min(100, (cur / tot) * 100) + '%';
+      }
+      if (progressLog) progressLog.textContent = '正在运行 · 当前进度 ' + cur + '/' + tot;
+      return;
+    }
+  };
+  var lastBuiltProjectName = '';
+  var btnOpenBuildFolder = document.getElementById('btnOpenBuildFolder');
+  if (btnOpenBuildFolder) btnOpenBuildFolder.addEventListener('click', function() {
+    var name = lastBuiltProjectName || (projectName && projectName.value ? projectName.value.trim() : '');
+    try {
+      var bridge = window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge;
+      if (!bridge || typeof bridge.OpenBuildFolder !== 'function') { if (progressLog) { progressLog.textContent = '请在 Launcher 中打开。'; progressLog.className = 'progress-box done-err'; } return; }
+      var json = bridge.OpenBuildFolder(name);
+      var r = JSON.parse(json || '{}');
+      if (progressLog) { progressLog.textContent = r.ok ? '已打开目录。' : (r.message || '打开失败'); progressLog.className = 'progress-box ' + (r.ok ? 'done-ok' : 'done-err'); }
+    } catch (e) { if (progressLog) { progressLog.textContent = e.message || '打开失败'; progressLog.className = 'progress-box done-err'; } }
+  });
+  window.onNfDone = function(success, message){
+    var barWrap = document.getElementById('progressBarWrap');
+    var barFill = document.getElementById('progressBarFill');
+    if (barWrap) barWrap.classList.remove('visible');
+    if (barFill) barFill.style.width = '0%';
+    if (progressLog) {
+      progressLog.textContent = success ? '制作成功，请前往「当前选择」中查看' : (message || '失败');
+      progressLog.className = 'progress-box ' + (success ? 'done-ok' : 'done-err');
+      progressLog.scrollTop = progressLog.scrollHeight;
+    }
+    if (startBtn) startBtn.disabled = false;
+    if (success) {
+      lastBuiltProjectName = (projectName && projectName.value) ? projectName.value.trim() : '';
+      if (projectName) projectName.value = '';
+      if (fontCurrent) fontCurrent.textContent = '未选择';
+      updateStartButtonState();
+      if (fontList) fontList.querySelectorAll('input[type="checkbox"]').forEach(function(cb){ cb.checked = false; });
+      if (modeHint) { modeHint.textContent = ''; modeHint.className = 'mode-hint'; }
+      if (modeGrid) {
+        modeGrid.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('active'); });
+        var first = modeGrid.querySelector('.mode-btn[data-mode="1"]'); if (first) first.classList.add('active');
+      }
+      currentMode = 1;
+      if (fontListSection) fontListSection.classList.add('mode1-hide');
+    }
+  };
+})();
+  </script>
+</body>
+</html>

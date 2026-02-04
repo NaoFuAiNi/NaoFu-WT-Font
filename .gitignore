@@ -1,0 +1,17 @@
+# 不提交到开源仓库
+游戏字体对照表（慎重）.xlsx
+实现与待办汇总.md
+ui/实现与待办汇总.md
+
+# 编译与生成
+Launcher/bin/
+Launcher/obj/
+src/obj/
+build/
+tools/nf_subset_tool/dist/
+nf_config.json
+
+# 根目录可执行文件（需本地编译）
+NaoFu WT Hub.exe
+NaoFu WT Customize Font 2.10.exe
+nf_subset_tool.exe

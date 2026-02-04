@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="theme-light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>关于作者 · NaoFu WT Hub 2.10</title>
+  <style>
+    @font-face {
+      font-family: "ZCOOL Kuaile";
+      src: url("../assets/CuteFount.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 110%; }
+    body {
+      font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      min-height: 100vh;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    html.theme-light {
+      background: linear-gradient(165deg, #e8f4fc 0%, #d4e8f5 25%, #f0e6f5 60%, #ffe8f0 100%);
+    }
+    html.theme-dark {
+      background: linear-gradient(165deg, #0f0f14 0%, #12121c 25%, #0d0d14 50%, #0f0f18 75%, #0a0a12 100%);
+    }
+    body.theme-light {
+      background: linear-gradient(165deg, #e8f4fc 0%, #d4e8f5 25%, #f0e6f5 60%, #ffe8f0 100%);
+      color: #2d3748;
+    }
+    body.theme-dark {
+      background: linear-gradient(165deg, #0f0f14 0%, #12121c 25%, #0d0d14 50%, #0f0f18 75%, #0a0a12 100%);
+      color: #e2e8f0;
+    }
+    html { scrollbar-width: thin; overflow-y: auto; height: 100%; min-height: 100%; }
+    body { overflow-y: auto; overflow-x: hidden; min-height: 100%; }
+    html.theme-light, body.theme-light { scrollbar-color: #5b8fb9 #e2e8f0; }
+    html.theme-dark, body.theme-dark { scrollbar-color: #38bdf8 #1e293b; }
+    html.theme-light::-webkit-scrollbar, body.theme-light::-webkit-scrollbar { width: 12px !important; height: 12px !important; }
+    html.theme-light::-webkit-scrollbar-track, body.theme-light::-webkit-scrollbar-track { background: #e2e8f0 !important; border-radius: 6px; margin: 4px 0; }
+    html.theme-light::-webkit-scrollbar-thumb, body.theme-light::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%) !important; border-radius: 6px; border: 3px solid #e2e8f0; min-height: 48px; }
+    html.theme-light::-webkit-scrollbar-thumb:hover, body.theme-light::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #5b8fb9 0%, #64748b 100%) !important; }
+    html.theme-dark::-webkit-scrollbar, body.theme-dark::-webkit-scrollbar { width: 12px !important; height: 12px !important; }
+    html.theme-dark::-webkit-scrollbar-track, body.theme-dark::-webkit-scrollbar-track { background: #1e293b !important; border-radius: 6px; margin: 4px 0; }
+    html.theme-dark::-webkit-scrollbar-thumb, body.theme-dark::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #475569 0%, #334155 100%) !important; border-radius: 6px; border: 3px solid #1e293b; min-height: 48px; }
+    html.theme-dark::-webkit-scrollbar-thumb:hover, body.theme-dark::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #38bdf8 0%, #475569 100%) !important; }
+    .container { max-width: 720px; margin: 0 auto; position: relative; }
+    .page-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 6px; text-align: center; }
+    body.theme-light .page-title { background: linear-gradient(90deg, #5b8fb9 0%, #b87aa3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    body.theme-dark .page-title { background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #c026d3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .page-sub { font-size: 0.88rem; opacity: 0.75; margin-top: 8px; margin-bottom: 28px; text-align: center; display: block; }
+    body.theme-light .page-sub { color: rgba(45,55,72,0.7); }
+    body.theme-dark .page-sub { color: rgba(226,232,240,0.7); }
+    .bg-paw { position: absolute; font-size: 2rem; opacity: 0.08; pointer-events: none; }
+    .bg-paw:nth-child(1) { top: 40px; left: 20px; }
+    .bg-paw:nth-child(2) { top: 120px; right: 30px; transform: rotate(-15deg); }
+    .bg-paw:nth-child(3) { bottom: 180px; left: 40px; transform: rotate(10deg); }
+    .bg-paw:nth-child(4) { bottom: 80px; right: 20px; }
+
+    .top-bar {
+      display: flex;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      width: fit-content;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 36px;
+      padding: 0 14px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    body.theme-light .back-link {
+      background: rgba(255,255,255,0.6);
+      color: #2d3748;
+    }
+    body.theme-light .back-link:hover {
+      background: rgba(212,232,245,0.6);
+      border-color: rgba(91,143,185,0.3);
+      transform: translateX(-2px);
+    }
+    body.theme-dark .back-link {
+      background: rgba(30,41,59,0.5);
+      border-color: rgba(56,189,248,0.2);
+      color: rgba(226,232,240,0.95);
+    }
+    body.theme-dark .back-link:hover {
+      background: rgba(56,189,248,0.08);
+      border-color: rgba(56,189,248,0.25);
+      transform: translateX(-2px);
+    }
+    .theme-card {
+      display: flex;
+      align-items: stretch;
+      gap: 6px;
+    }
+    .theme-card .theme-btn {
+      font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI Variable", "Segoe UI", sans-serif;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 36px;
+      padding: 0 14px 2px 10px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    body.theme-light .theme-btn.light {
+      background: linear-gradient(135deg, rgba(91,143,185,0.25), rgba(184,122,163,0.2));
+      border-color: #5b8fb9;
+      color: #2d3748;
+    }
+    body.theme-light .theme-btn.dark {
+      background: rgba(255,255,255,0.5);
+      border-color: rgba(91,143,185,0.2);
+      color: #64748b;
+    }
+    body.theme-light .theme-btn.dark:hover {
+      background: rgba(212,232,245,0.5);
+      color: #2d3748;
+    }
+    body.theme-dark .theme-btn.dark {
+      background: rgba(56,189,248,0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+    body.theme-dark .theme-btn.light {
+      background: rgba(30,41,59,0.5);
+      border-color: rgba(56,189,248,0.2);
+      color: rgba(226,232,240,0.7);
+    }
+    body.theme-dark .theme-btn.light:hover {
+      background: rgba(56,189,248,0.08);
+      color: #e2e8f0;
+    }
+
+    .card {
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    body.theme-light .card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 4px 24px rgba(91,143,185,0.08);
+    }
+    body.theme-dark .card {
+      background: rgba(30,41,59,0.6);
+      border: 1px solid rgba(56,189,248,0.2);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      opacity: 0.85;
+      padding-top: 3px;
+      line-height: 1.35;
+      overflow: visible;
+    }
+    body.theme-light .card-title { color: #5b8fb9; }
+    body.theme-dark .card-title {
+      background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #c026d3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .author-section { text-align: center; padding: 8px 0 16px; }
+    .author-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 14px;
+      border: 3px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    body.theme-light .author-avatar { border-color: rgba(91,143,185,0.35); }
+    body.theme-dark .author-avatar { border-color: rgba(56,189,248,0.4); }
+    .author-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    body.theme-light .author-name { color: #2d3748; }
+    body.theme-dark .author-name {
+      background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .author-desc { font-size: 0.9rem; opacity: 0.8; margin-bottom: 18px; line-height: 1.5; }
+    .author-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+    .author-links a, .author-links .author-qq {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+    .author-links button { font-family: inherit; margin: 0; cursor: pointer; }
+    body.theme-light .author-links a {
+      background: rgba(91,143,185,0.15);
+      color: #5b8fb9;
+      border-color: rgba(91,143,185,0.3);
+    }
+    body.theme-light .author-links a:hover {
+      background: rgba(91,143,185,0.25);
+      transform: translateY(-1px);
+    }
+    body.theme-dark .author-links a {
+      background: rgba(56,189,248,0.1);
+      color: #38bdf8;
+      border-color: rgba(56,189,248,0.25);
+    }
+    body.theme-dark .author-links a:hover {
+      background: rgba(56,189,248,0.18);
+      transform: translateY(-1px);
+    }
+    .author-links .author-qq {
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    body.theme-light .author-qq {
+      background: rgba(91,143,185,0.15);
+      color: #5b8fb9;
+      border-color: rgba(91,143,185,0.3);
+    }
+    body.theme-light .author-qq:hover {
+      background: rgba(91,143,185,0.25);
+      transform: translateY(-1px);
+    }
+    body.theme-dark .author-qq {
+      background: rgba(56,189,248,0.1);
+      color: #38bdf8;
+      border-color: rgba(56,189,248,0.25);
+    }
+    body.theme-dark .author-qq:hover {
+      background: rgba(56,189,248,0.18);
+      transform: translateY(-1px);
+    }
+
+    .thank-list-wrap { max-height: 280px; overflow-y: auto; overflow-x: hidden; padding-right: 4px; }
+    body.theme-light .thank-list-wrap { scrollbar-color: #5b8fb9 #e2e8f0; }
+    body.theme-dark .thank-list-wrap { scrollbar-color: #38bdf8 #1e293b; }
+    .thank-list-wrap::-webkit-scrollbar { width: 12px; height: 12px; }
+    body.theme-light .thank-list-wrap::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 6px; margin: 4px 0; }
+    body.theme-light .thank-list-wrap::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); border-radius: 6px; border: 3px solid #e2e8f0; min-height: 48px; }
+    body.theme-light .thank-list-wrap::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #5b8fb9 0%, #64748b 100%); }
+    body.theme-dark .thank-list-wrap::-webkit-scrollbar-track { background: #1e293b; border-radius: 6px; margin: 4px 0; }
+    body.theme-dark .thank-list-wrap::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #475569 0%, #334155 100%); border-radius: 6px; border: 3px solid #1e293b; min-height: 48px; }
+    body.theme-dark .thank-list-wrap::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #38bdf8 0%, #475569 100%); }
+    .thank-list { display: flex; flex-direction: column; gap: 14px; }
+    .thank-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+    body.theme-light .thank-item {
+      background: rgba(91,143,185,0.15);
+      border: 1px solid rgba(91,143,185,0.3);
+    }
+    body.theme-light .thank-item:hover {
+      background: rgba(91,143,185,0.28);
+      border-color: rgba(91,143,185,0.5);
+    }
+    body.theme-dark .thank-item {
+      background: rgb(27, 46, 64);
+      border: 1px solid rgba(56,189,248,0.25);
+    }
+    body.theme-dark .thank-item:hover {
+      background: rgba(56,189,248,0.18);
+      border-color: rgba(56,189,248,0.45);
+    }
+    .thank-item-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    body.theme-light .thank-item-avatar { border: 2px solid rgba(91,143,185,0.25); }
+    body.theme-dark .thank-item-avatar { border: 2px solid rgba(56,189,248,0.25); }
+    .thank-item-body { flex: 1; min-width: 0; }
+    .thank-item-link {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.2s ease;
+    }
+    .thank-item-link:hover { opacity: 1; }
+    .thank-item-name { font-size: 1.05rem; font-weight: 600; display: block; margin-bottom: 4px; }
+    .thank-item-desc { font-size: 0.82rem; line-height: 1.4; opacity: 0.85; }
+    body.theme-light .thank-item-desc { color: #4a5568; }
+    body.theme-dark .thank-item-desc { color: rgba(226,232,240,0.8); }
+
+    .page-footer {
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 32px;
+      margin-bottom: 24px;
+      padding: 0 16px;
+      line-height: 1.5;
+    }
+    body.theme-light .page-footer { color: rgba(45,55,72,0.5); }
+    body.theme-dark .page-footer { color: rgba(226,232,240,0.45); }
+
+    .about-page-header { opacity: 0; transform: translateY(14px); transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    body.loaded .about-page-header { opacity: 1; transform: translateY(0); transition-delay: 0.12s; }
+    .top-bar, .card-author, .card-thank {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    body.loaded .top-bar { opacity: 1; transform: translateY(0); transition-delay: 0.08s; }
+    body.loaded .card-author { opacity: 1; transform: translateY(0); transition-delay: 0.18s; }
+    body.loaded .card-thank { opacity: 1; transform: translateY(0); transition-delay: 0.28s; }
+  </style>
+</head>
+<body class="theme-light">
+  <span class="bg-paw">🐾</span>
+  <span class="bg-paw">🐾</span>
+  <span class="bg-paw">🐾</span>
+  <span class="bg-paw">🐾</span>
+  <div class="container content-wrap">
+    <div class="about-header top-bar">
+      <a href="welcome.html" class="back-link" id="backLink">← 返回首页</a>
+      <div class="theme-card">
+        <button type="button" class="theme-btn light" id="btnLight" aria-pressed="true">☀️ 亮色</button>
+        <button type="button" class="theme-btn dark" id="btnDark" aria-pressed="false">🌙 暗色</button>
+      </div>
+    </div>
+    <header class="about-page-header" style="text-align:center;margin-bottom:24px;">
+      <h1 class="page-title">About NaoFu</h1>
+      <p class="page-sub">NaoFuAiNi</p>
+    </header>
+
+    <div class="card card-author">
+      <div class="card-title">关于作者</div>
+      <div class="author-section">
+        <img src="../assets/author_avatar.jpg" alt="NaoFu" class="author-avatar author-avatar-img" id="authorAvatar" />
+        <div class="author-name">NaoFu</div>
+        <p class="author-desc">战争雷霆自定义字体替换工具 NaoFu WT Hub 的作者，一只小脑斧。感谢你的使用与反馈。</p>
+        <div class="author-links">
+          <a href="https://space.bilibili.com/405046590" target="_blank" rel="noopener noreferrer">📺 B 站空间</a>
+          <button type="button" class="author-qq" id="btnQqGroup" title="点击复制群号">💬 QQ 群：941587776</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-thank">
+      <div class="card-title">感谢名单</div>
+      <div class="thank-list-wrap">
+        <div class="thank-list">
+          <div class="thank-item">
+            <a href="https://space.bilibili.com/405046590" class="thank-item-link" target="_blank" rel="noopener noreferrer">
+              <img src="../assets/author_avatar.jpg" alt="" class="thank-item-avatar author-avatar-img" />
+              <div class="thank-item-body">
+                <span class="thank-item-name">NaoFu</span>
+                <p class="thank-item-desc">本工具作者，一只小脑斧</p>
+              </div>
+            </a>
+          </div>
+          <div class="thank-item">
+            <a href="#" class="thank-item-link" target="_blank" rel="noopener noreferrer" title="B 站空间">
+              <img src="../assets/ShareMoonHit.png" alt="" class="thank-item-avatar thank-avatar-img" />
+              <div class="thank-item-body">
+                <span class="thank-item-name">Kono筱月哒</span>
+                <p class="thank-item-desc">为产品界面与交互提供了宝贵建议，对整体体验提升贡献良多。</p>
+              </div>
+            </a>
+          </div>
+          <div class="thank-item">
+            <a href="#" class="thank-item-link" target="_blank" rel="noopener noreferrer" title="B 站空间">
+              <img src="../assets/Apple.png" alt="" class="thank-item-avatar thank-avatar-img" />
+              <div class="thank-item-body">
+                <span class="thank-item-name">小苹果Pro_Max</span>
+                <p class="thank-item-desc">参与多轮测试与反馈，为软件稳定性与易用性改进提供了重要支持。</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="page-footer">本工具仅供学习与个人使用，与游戏开发商无关联。</p>
+  </div>
+  <script>
+(function(){
+  var STORAGE_THEME = 'nf_wt_font_theme';
+  var QQ_GROUP = '941587776';
+  var btnLight = document.getElementById('btnLight');
+  var btnDark = document.getElementById('btnDark');
+  var btnQqGroup = document.getElementById('btnQqGroup');
+
+  function getTheme() {
+    try { return localStorage.getItem(STORAGE_THEME) || 'light'; } catch(e) { return 'light'; }
+  }
+  function setBodyTheme(theme) {
+    document.documentElement.classList.remove('theme-light', 'theme-dark');
+    document.documentElement.classList.add('theme-' + theme);
+    document.body.classList.remove('theme-light', 'theme-dark');
+    document.body.classList.add('theme-' + theme);
+    try { localStorage.setItem(STORAGE_THEME, theme); } catch(e) {}
+    btnLight.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+    btnDark.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    try {
+      if (window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge && typeof chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme === 'function') {
+        chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme(theme);
+      }
+    } catch (e) {}
+  }
+
+  setBodyTheme(getTheme());
+
+  btnLight.addEventListener('click', function() { setBodyTheme('light'); });
+  btnDark.addEventListener('click', function() { setBodyTheme('dark'); });
+
+  btnQqGroup.addEventListener('click', function() {
+    var origText = btnQqGroup.textContent;
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(QQ_GROUP).then(function() {
+          btnQqGroup.textContent = '已复制群号';
+          setTimeout(function() { btnQqGroup.textContent = origText; }, 1500);
+        }).catch(function() {
+          fallbackCopy();
+        });
+      } else {
+        fallbackCopy();
+      }
+    } catch (e) {
+      fallbackCopy();
+    }
+    function fallbackCopy() {
+      var ta = document.createElement('textarea');
+      ta.value = QQ_GROUP;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        btnQqGroup.textContent = '已复制群号';
+        setTimeout(function() { btnQqGroup.textContent = origText; }, 1500);
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  });
+
+  document.querySelectorAll('.author-avatar-img, .thank-avatar-img').forEach(function(el) {
+    el.onerror = function() { this.style.display = 'none'; };
+  });
+
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ document.body.classList.add('loaded'); });
+  });
+})();
+  </script>
+</body>
+</html>

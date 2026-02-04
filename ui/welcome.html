@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NaoFu WT Hub 2.10</title>
+  <style>
+    @font-face {
+      font-family: "ZCOOL Kuaile";
+      src: url("../assets/CuteFount.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 110%; }
+    body {
+      font-family: "ZCOOL Kuaile", "Microsoft YaHei UI", "Microsoft YaHei", "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      min-height: 100vh;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+    body.theme-light {
+      background: linear-gradient(165deg, #e8f4fc 0%, #d4e8f5 25%, #f0e6f5 60%, #ffe8f0 100%);
+      color: #2d3748;
+    }
+    body.theme-dark {
+      background: linear-gradient(165deg, #0f0f14 0%, #12121c 25%, #0d0d14 50%, #0f0f18 75%, #0a0a12 100%);
+      color: #e2e8f0;
+    }
+    html { scrollbar-width: thin; overflow-y: auto; }
+    body { overflow-y: auto; overflow-x: hidden; }
+    body.theme-light { scrollbar-color: #5b8fb9 #e2e8f0; }
+    body.theme-dark { scrollbar-color: #38bdf8 #1e293b; }
+    body.theme-light::-webkit-scrollbar { width: 12px; height: 12px; }
+    body.theme-light::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 6px; margin: 4px 0; }
+    body.theme-light::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); border-radius: 6px; border: 3px solid #e2e8f0; min-height: 48px; }
+    body.theme-light::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #5b8fb9 0%, #64748b 100%); }
+    body.theme-dark::-webkit-scrollbar { width: 12px; height: 12px; }
+    body.theme-dark::-webkit-scrollbar-track { background: #1e293b; border-radius: 6px; margin: 4px 0; }
+    body.theme-dark::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #475569 0%, #334155 100%); border-radius: 6px; border: 3px solid #1e293b; min-height: 48px; }
+    body.theme-dark::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #38bdf8 0%, #475569 100%); }
+    .container { max-width: 720px; margin: 0 auto; position: relative; }
+    .bg-paw { position: absolute; font-size: 2rem; opacity: 0.08; pointer-events: none; }
+    .bg-paw:nth-child(1) { top: 40px; left: 20px; }
+    .bg-paw:nth-child(2) { top: 120px; right: 30px; transform: rotate(-15deg); }
+    .bg-paw:nth-child(3) { bottom: 180px; left: 40px; transform: rotate(10deg); }
+    .bg-paw:nth-child(4) { bottom: 80px; right: 20px; }
+
+    header { text-align: center; margin-bottom: 40px; }
+    .welcome-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+      padding-top: 0.15em;
+      margin-bottom: 4px;
+      transition: background 0.4s ease, -webkit-text-fill-color 0.4s ease;
+    }
+    body.theme-light .welcome-title {
+      background: linear-gradient(90deg, #5b7a9e 0%, #6b6b8a 50%, #7a6b8a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.theme-dark .welcome-title {
+      background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #c026d3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(14,165,233,0.25);
+    }
+    .sub { font-size: 0.95rem; opacity: 0.75; margin-top: 26px; margin-bottom: 0; display: block; text-align: center; }
+
+    .card {
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease,
+                  transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+    }
+    body.theme-light .card {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 4px 24px rgba(91,143,185,0.08);
+    }
+    body.theme-light .card:hover {
+      box-shadow: 0 12px 32px rgba(91,143,185,0.12);
+    }
+    body.theme-dark .card {
+      background: rgba(30,41,59,0.6);
+      border: 1px solid rgba(56,189,248,0.2);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    body.theme-dark .card:hover {
+      border-color: rgba(56,189,248,0.35);
+      box-shadow: 0 0 24px rgba(56,189,248,0.06);
+    }
+
+    .card-theme {
+      padding: 16px 20px;
+      margin-bottom: 0;
+    }
+    body.theme-light .card-theme {
+      background: rgba(255,255,255,0.5);
+      border-color: rgba(91,143,185,0.15);
+      box-shadow: 0 2px 12px rgba(91,143,185,0.05);
+    }
+    body.theme-dark .card-theme {
+      background: rgba(15,23,42,0.4);
+      border-color: rgba(56,189,248,0.12);
+      box-shadow: none;
+    }
+    .card-theme .card-title { font-size: 0.8rem; margin-bottom: 12px; opacity: 0.7; }
+    .card-theme .theme-btn { padding: 10px 20px; font-size: 0.9rem; }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+      opacity: 0.85;
+      padding-top: 3px;
+      line-height: 1.35;
+      overflow: visible;
+    }
+    body.theme-light .card-title { color: #5b8fb9; }
+    body.theme-dark .card-title {
+      background: linear-gradient(90deg, #0ea5e9, #8b5cf6, #c026d3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 24px rgba(14,165,233,0.2);
+    }
+
+    .menu-list { display: flex; flex-direction: column; gap: 12px; }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-size: 1.12rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .menu-item .num { font-weight: 700; opacity: 0.8; min-width: 28px; font-size: 1.05rem; }
+    body.theme-light .menu-item {
+      background: rgba(255,255,255,0.6);
+      color: #2d3748;
+    }
+    body.theme-light .menu-item:hover {
+      background: rgba(212,232,245,0.6);
+      border-color: rgba(91,143,185,0.3);
+      transform: translateX(4px);
+    }
+    body.theme-dark .menu-item {
+      background: rgba(15,23,42,0.4);
+      color: rgba(226,232,240,0.95);
+    }
+    body.theme-dark .menu-item:hover {
+      background: rgba(56,189,248,0.08);
+      border-color: rgba(56,189,248,0.25);
+      transform: translateX(4px);
+    }
+    body.theme-light .menu-item.primary { border-color: rgba(91,143,185,0.4); }
+    body.theme-dark .menu-item.primary { border-color: rgba(56,189,248,0.3); }
+    .menu-item.disabled {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+    }
+    .menu-item.disabled:hover { transform: none; }
+
+    .theme-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .theme-btn {
+      padding: 12px 24px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    body.theme-light .theme-btn.light {
+      background: linear-gradient(135deg, rgba(91,143,185,0.25), rgba(184,122,163,0.2));
+      border-color: #5b8fb9;
+      color: #2d3748;
+    }
+    body.theme-light .theme-btn.dark {
+      background: rgba(255,255,255,0.5);
+      border-color: rgba(91,143,185,0.2);
+      color: #64748b;
+    }
+    body.theme-light .theme-btn.dark:hover {
+      background: rgba(212,232,245,0.5);
+      color: #2d3748;
+    }
+    body.theme-dark .theme-btn.dark {
+      background: rgba(56,189,248,0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+    body.theme-dark .theme-btn.light {
+      background: rgba(30,41,59,0.5);
+      border-color: rgba(56,189,248,0.2);
+      color: rgba(226,232,240,0.7);
+    }
+    body.theme-dark .theme-btn.light:hover {
+      background: rgba(56,189,248,0.08);
+      color: #e2e8f0;
+    }
+
+    .welcome-header, .card-func, .card-theme {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    body.loaded .welcome-header {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.08s;
+    }
+    body.loaded .card-func {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.22s;
+    }
+    body.loaded .card-theme {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.38s;
+    }
+
+    .page-footer {
+      font-size: 0.8rem;
+      text-align: center;
+      margin-top: 32px;
+      margin-bottom: 24px;
+      padding: 0 16px;
+      line-height: 1.5;
+    }
+    body.theme-light .page-footer { color: rgba(45,55,72,0.5); }
+    body.theme-dark .page-footer { color: rgba(226,232,240,0.45); }
+
+  </style>
+</head>
+<body class="theme-light">
+  <span class="bg-paw">🐾</span>
+  <span class="bg-paw">🐾</span>
+  <span class="bg-paw">🐾</span>
+  <span class="bg-paw">🐾</span>
+  <div class="container content-wrap">
+    <header class="welcome-header">
+      <h1 class="welcome-title">欢迎使用 NaoFu WT Hub v2.10</h1>
+      <p class="sub">战争雷霆自定义字体替换工具 · 作者 NaoFu</p>
+    </header>
+
+    <div class="card card-func">
+      <div class="card-title">功能</div>
+      <div class="menu-list">
+        <div class="menu-item primary" id="linkCustomFont" role="link" tabindex="0" data-href="version_light.html">
+          <span class="num">1</span>
+          <span>自定义字体</span>
+        </div>
+        <div class="menu-item primary" id="linkAboutAuthor" role="link" tabindex="0" data-href="about_author.html">
+          <span class="num">2</span>
+          <span>关于作者</span>
+        </div>
+        <div class="menu-item disabled">
+          <span class="num">3</span>
+          <span>正在施工</span>
+        </div>
+        <div class="menu-item disabled">
+          <span class="num">4</span>
+          <span>正在施工</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-theme">
+      <div class="card-title">主题</div>
+      <div class="theme-row">
+      <button type="button" class="theme-btn light" id="btnLight" aria-pressed="true">☀️ 亮色模式</button>
+      <button type="button" class="theme-btn dark" id="btnDark" aria-pressed="false">🌙 暗色模式</button>
+      </div>
+    </div>
+
+    <p class="page-footer">本工具仅供学习与个人使用，与游戏开发商无关联。</p>
+  </div>
+  <script>
+(function(){
+  var STORAGE_THEME = 'nf_wt_font_theme';
+  var linkCustomFont = document.getElementById('linkCustomFont');
+  var linkAboutAuthor = document.getElementById('linkAboutAuthor');
+  var btnLight = document.getElementById('btnLight');
+  var btnDark = document.getElementById('btnDark');
+
+  function getTheme() {
+    try { return localStorage.getItem(STORAGE_THEME) || 'light'; } catch(e) { return 'light'; }
+  }
+  function setTheme(theme) {
+    try { localStorage.setItem(STORAGE_THEME, theme); } catch(e) {}
+    document.body.classList.remove('theme-light', 'theme-dark');
+    document.body.classList.add('theme-' + theme);
+    linkCustomFont.setAttribute('data-href', theme === 'dark' ? 'version_dark.html' : 'version_light.html');
+    btnLight.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
+    btnDark.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+  }
+
+  setTheme(getTheme());
+  try {
+    if (window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge && typeof chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme === 'function') {
+      chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme(getTheme());
+    }
+  } catch (e) {}
+
+  linkCustomFont.addEventListener('click', function(){
+    var u = linkCustomFont.getAttribute('data-href');
+    if (u) window.location.href = u;
+  });
+  linkCustomFont.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); var u = linkCustomFont.getAttribute('data-href'); if (u) window.location.href = u; }
+  });
+  linkAboutAuthor.addEventListener('click', function(){
+    var u = linkAboutAuthor.getAttribute('data-href');
+    if (u) window.location.href = u;
+  });
+  linkAboutAuthor.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); var u = linkAboutAuthor.getAttribute('data-href'); if (u) window.location.href = u; }
+  });
+  btnLight.addEventListener('click', function(){
+    setTheme('light');
+    try { if (window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge && typeof chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme === 'function') chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme('light'); } catch (e) {}
+  });
+  btnDark.addEventListener('click', function(){
+    setTheme('dark');
+    try { if (window.chrome && chrome.webview && chrome.webview.hostObjects && chrome.webview.hostObjects.sync && chrome.webview.hostObjects.sync.nfBridge && typeof chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme === 'function') chrome.webview.hostObjects.sync.nfBridge.SetTitleBarTheme('dark'); } catch (e) {}
+  });
+
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ document.body.classList.add('loaded'); });
+  });
+})();
+  </script>
+</body>
+</html>
