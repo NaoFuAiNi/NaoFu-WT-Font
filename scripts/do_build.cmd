@@ -14,6 +14,6 @@ if not exist "%VSINSTALL%\VC\Auxiliary\Build\vcvars64.bat" (
 )
 call "%VSINSTALL%\VC\Auxiliary\Build\vcvars64.bat" >nul 2>&1
 
-cl /nologo /W3 /O2 /utf-8 /I src\include /Fe"NaoFu WT Customize Font 2.10.exe" src\source\main.c src\source\nf_bin.c src\source\nf_console.c src\source\nf_fonts.c src\source\nf_io.c src\source\nf_patcher.c src\source\nf_subset.c src\source\nf_ui.c
+cl /nologo /W3 /O2 /utf-8 /I src\include /Fe"NaoFu WT Customize Font 2.11.exe" src\source\main.c src\source\nf_bin.c src\source\nf_console.c src\source\nf_fonts.c src\source\nf_io.c src\source\nf_patcher.c src\source\nf_subset.c src\source\nf_ui.c
 if errorlevel 1 (echo BUILD FAILED & exit /b 1)
-echo BUILD OK: NaoFu WT Customize Font 2.10.exe
+echo BUILD OK: NaoFu WT Customize Font 2.11.exe

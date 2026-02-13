@@ -28,5 +28,5 @@ pyinstaller --onefile --noconsole --name nf_subset_tool subset_tool.py
 生成的 `dist/nf_subset_tool.exe` 拷到：
 
 - 开发：`debug/` 根目录，这样跑 `build_debug.ps1` 或编 Launcher 时会自动带过去；  
-- 发布：和 `NaoFu WT Customize Font 2.10.exe` 放一起，或丢发布包的 `tools/` 里。
+- 发布：和 `NaoFu WT Customize Font 2.11.exe` 放一起，或丢发布包的 `tools/` 里。
 

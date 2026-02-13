@@ -65,7 +65,7 @@
 
 - `subset_tool.py`：字体子集化与西里尔映射的 Python 脚本。  
 - `build_exe.bat`：使用 PyInstaller 打包为 `nf_subset_tool.exe`，供 C 程序调用。  
-- 发布时需将 `nf_subset_tool.exe` 放在与 `NaoFu WT Customize Font 2.10.exe` 同目录（或发布包的 `tools` 下）。
+- 发布时需将 `nf_subset_tool.exe` 放在与 `NaoFu WT Customize Font 2.11.exe` 同目录（或发布包的 `tools` 下）。
 
 ---
 

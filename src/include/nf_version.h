@@ -3,7 +3,7 @@
 #ifndef NF_VERSION_H
 #define NF_VERSION_H
 
-#define NF_TOOL_VERSION     "2.10"
+#define NF_TOOL_VERSION     "2.11"
 #define DATA_NAOFU_MAGIC    "NaoFu"
 #define DATA_NAOFU_VER      2
 #define MACHINE_ID_SIZE     8
