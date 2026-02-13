@@ -10,7 +10,7 @@ remap: 西里尔 Т(U+0422)/У(U+0423)/Е(U+0415) 使用拉丁 T/U/E 字形，�
 import sys
 import os
 
-# 从子进程启动时（如 C 程序 CreateProcess）可能为 None，尽量用可被父进程捕获的句柄
+# 被 C 调起来时 stdout/stderr 可能没挂好，兜个底
 def _safe_stream(name, default_fd):
     s = sys.__dict__.get(name)
     if s is not None and hasattr(s, "write"):
@@ -24,38 +24,59 @@ if sys.stdout is None:
 if sys.stderr is None:
     sys.stderr = _safe_stream("stderr", 2)
 
-# 西里尔→拉丁：游戏里苏系名称可能用西里尔 Т/У/Е，字体无这些字会缺字，映射到拉丁 T/U/E 字形
+# 苏系载具名会用西里尔 Т/У/Е，没这仨就缺字，用拉丁 T/U/E 顶
 CYRILLIC_TO_LATIN = [
     (0x0422, 0x0054),  # Т → T
     (0x0423, 0x0055),  # У → U
-    (0x0415, 0x0045),   # Е → E
+    (0x0415, 0x0045),  # Е → E
 ]
 
 def remap_cyrillic_to_latin(font):
-    """在字体 cmap 中增加西里尔 Т/У/Е → 拉丁 T/U/E 字形映射。"""
+    """往 cmap 里加 Т/У/Е → T/U/E。只动 Unicode 子表，format 0 那种别动，不然保存会炸。"""
     cmap = font.getBestCmap()
     if not cmap:
         return
+
     glyph_for = {}
     for _cyr, lat in CYRILLIC_TO_LATIN:
         if lat in cmap:
             glyph_for[_cyr] = cmap[lat]
     if not glyph_for:
         return
-    for table in getattr(font.get("cmap"), "tables", []):
-        if hasattr(table, "cmap") and isinstance(table.cmap, dict):
-            for cyr, gname in glyph_for.items():
-                table.cmap[cyr] = gname
+
+    cmap_table = font.get("cmap")
+    if not cmap_table:
+        return
+
+    for table in getattr(cmap_table, "tables", []):
+        if not hasattr(table, "cmap") or not isinstance(table.cmap, dict):
+            continue
+
+        # 只改 Unicode 子表
+        is_unicode = (
+            table.platformID == 0
+            or (table.platformID == 3 and getattr(table, "platEncID", None) in (1, 10))
+        )
+        if not is_unicode:
+            continue
+
+        # format 0 只支持 0~255，塞 0x0422 会炸
+        fmt = getattr(table, "format", None)
+        if fmt == 0:
+            continue
+
+        for cyr, gname in glyph_for.items():
+            table.cmap[cyr] = gname
 
 def main():
     argc = len(sys.argv)
     if argc == 3:
-        # 仅 remap：input → output
+        # 只做 remap
         input_path = sys.argv[1]
         output_path = sys.argv[2]
         ref_path = None
     elif argc == 4:
-        # 瘦身 + remap：ref, input → output
+        # 瘦身 + remap
         ref_path = sys.argv[1]
         input_path = sys.argv[2]
         output_path = sys.argv[3]
@@ -90,6 +111,8 @@ def main():
                 sys.exit(1)
             unicodes = set(rcmap.keys())
             options = subset_module.Options()
+            # 有的字体子集化后重算 UnicodeRanges 会越界报错，关掉不碍事
+            options.prune_unicode_ranges = False
             subsetter = subset_module.Subsetter(options)
             subsetter.populate(unicodes=unicodes)
             subsetter.subset(font)
@@ -97,7 +120,9 @@ def main():
         font.save(output_path)
         font.close()
     except Exception as e:
+        import traceback
         sys.stderr.write("Error: %s\n" % str(e))
+        traceback.print_exc(file=sys.stderr)
         sys.exit(1)
     sys.exit(0)
 

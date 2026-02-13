@@ -281,7 +281,7 @@
     <div class="card card-func">
       <div class="card-title">功能</div>
       <div class="menu-list">
-        <div class="menu-item primary" id="linkCustomFont" role="link" tabindex="0" data-href="version_light.html">
+        <div class="menu-item primary" id="linkCustomFont" role="link" tabindex="0" data-href="customize_font.html">
           <span class="num">1</span>
           <span>自定义字体</span>
         </div>
@@ -325,7 +325,7 @@
     try { localStorage.setItem(STORAGE_THEME, theme); } catch(e) {}
     document.body.classList.remove('theme-light', 'theme-dark');
     document.body.classList.add('theme-' + theme);
-    linkCustomFont.setAttribute('data-href', theme === 'dark' ? 'version_dark.html' : 'version_light.html');
+    linkCustomFont.setAttribute('data-href', 'customize_font.html');
     btnLight.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
     btnDark.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
   }

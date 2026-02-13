@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-/* 固定宽度整型（便于跨平台与代码意图表达） */
+/* 固定宽度整型 */
 typedef uint8_t   u8;
 typedef uint16_t  u16;
 typedef uint32_t  u32;

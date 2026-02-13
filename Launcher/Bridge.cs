@@ -110,7 +110,7 @@ public class Bridge
         _onTitleBarTheme?.Invoke(string.Equals(theme, "dark", StringComparison.OrdinalIgnoreCase));
     }
 
-    /// <summary>查找 C 程序与工作目录</summary>
+    /// <summary>查找 C 程序与工作目录。工作目录必须包含 font\source\fonts.vromfs.bin，否则 C 程序会报无法打开。</summary>
     private (string? exePath, string? workDir) FindWorkDir()
     {
         string baseDir = Application.StartupPath ?? "";
@@ -129,13 +129,34 @@ public class Bridge
                 var workDir = (exeDirName.Equals("bin", StringComparison.OrdinalIgnoreCase) || exeDirName.Equals("tools", StringComparison.OrdinalIgnoreCase) || exeDirName.Equals("app", StringComparison.OrdinalIgnoreCase))
                     ? (Directory.GetParent(exeDir)?.FullName ?? exeDir)
                     : exeDir;
+                workDir = ResolveWorkDirWithFontSource(workDir);
                 return (candidate, workDir);
             }
             var candidateInTools = Path.Combine(dir, "tools", ExeName);
             if (File.Exists(candidateInTools))
-                return (candidateInTools, dir);
+            {
+                var workDir = ResolveWorkDirWithFontSource(dir);
+                return (candidateInTools, workDir);
+            }
         }
         return (null, null);
+    }
+
+    /// <summary>若 workDir 下没有 font\source\fonts.vromfs.bin，则向上查找直到找到包含该文件的目录（避免从 Launcher 输出目录运行时工作目录错误）。</summary>
+    private static string ResolveWorkDirWithFontSource(string workDir)
+    {
+        var required = Path.Combine(workDir, "font", "source", "fonts.vromfs.bin");
+        if (File.Exists(required))
+            return workDir;
+        var dir = Directory.GetParent(workDir);
+        while (dir != null)
+        {
+            var p = Path.Combine(dir.FullName, "font", "source", "fonts.vromfs.bin");
+            if (File.Exists(p))
+                return dir.FullName;
+            dir = dir.Parent;
+        }
+        return workDir;
     }
 
     /// <summary>执行字体替换，mode 1/2/3，slotsJson 如 "[1,2,5]"</summary>
@@ -892,6 +913,13 @@ public class Bridge
             await NotifyDone(false, "未找到 " + ExeName + "，请将启动器与 C 程序放在同一目录。");
             return;
         }
+        var exeDir = Path.GetDirectoryName(exePath);
+        var subsetToolPath = !string.IsNullOrEmpty(exeDir) ? Path.Combine(exeDir, "nf_subset_tool.exe") : "";
+        if (string.IsNullOrEmpty(subsetToolPath) || !File.Exists(subsetToolPath))
+        {
+            await NotifyDone(false, "未找到 nf_subset_tool.exe（应与 " + ExeName + " 在同一目录）。请先完整编译：debug 下需有 nf_subset_tool.exe，再重新编译 Launcher。");
+            return;
+        }
 
         var pn = (projectName ?? "").Trim();
         if (!ValidateProjectName(pn, ProjectNameMax, out var errProject))
@@ -939,6 +967,7 @@ public class Bridge
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
+            RedirectStandardInput = true,
             CreateNoWindow = true,
             StandardOutputEncoding = System.Text.Encoding.UTF8,
             StandardErrorEncoding = System.Text.Encoding.UTF8
@@ -952,6 +981,13 @@ public class Bridge
                 await NotifyDone(false, "无法启动进程。");
                 return;
             }
+            /* 向 stdin 写入 y\n，避免 C 端「是否瘦身/是否继续」等 scanf 一直阻塞 */
+            try
+            {
+                await process.StandardInput.WriteAsync("y\ny\ny\ny\ny\n");
+                process.StandardInput.Close();
+            }
+            catch { }
 
             var lastLines = new List<string>(8);
             var lastErrLines = new List<string>(8);
@@ -980,6 +1016,28 @@ public class Bridge
                 var tailErr = lastErrLines.Count > 0 ? string.Join(" ", lastErrLines.TakeLast(5)) : "";
                 var tail = string.IsNullOrEmpty(tailErr) ? tailOut : (string.IsNullOrEmpty(tailOut) ? tailErr : tailOut + " " + tailErr);
                 msg = string.IsNullOrEmpty(tail) ? ("退出码 " + process.ExitCode) : (tail + " · 退出码 " + process.ExitCode);
+                /* 瘦身失败时优先显示 C 端写入的日志（Python/fonttools 真实报错），先查 exe 所在目录再查 workDir */
+                string? logContent = null;
+                string? logPathFound = null;
+                foreach (var dir in new[] { exeDir, workDir })
+                {
+                    if (string.IsNullOrEmpty(dir)) continue;
+                    var logPath = Path.Combine(dir, "nf_subset_tool_log.txt");
+                    if (!File.Exists(logPath)) continue;
+                    logPathFound = logPath;
+                    try
+                    {
+                        logContent = File.ReadAllText(logPath, System.Text.Encoding.UTF8).Trim();
+                        if (logContent.Length > 0) break;
+                    }
+                    catch { }
+                }
+                if (!string.IsNullOrEmpty(logContent))
+                    msg = logContent + "\n" + msg;
+                else if (!string.IsNullOrEmpty(logPathFound))
+                    msg = msg + "\n详细错误请查看: " + logPathFound;
+                else if (!string.IsNullOrEmpty(exeDir))
+                    msg = msg + "\n详细错误（若有）: " + Path.Combine(exeDir, "nf_subset_tool_log.txt");
             }
             await NotifyDone(success, msg);
         }

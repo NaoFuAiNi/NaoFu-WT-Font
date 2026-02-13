@@ -13,7 +13,7 @@ static void nf_console_puts_utf8(const char* utf8) {
     HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hOut == INVALID_HANDLE_VALUE) return;
     DWORD ft = GetFileType(hOut);
-    /* 管道/重定向时（如被 Launcher 调用）：直接写 UTF-8 字节，便于前端正确显示 */
+    /* 被 Launcher 调时写 UTF-8，前端才能对 */
     if (ft == FILE_TYPE_PIPE || ft == FILE_TYPE_DISK) {
         size_t len = strlen(utf8);
         if (len > 0) {

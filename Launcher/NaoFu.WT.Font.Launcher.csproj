@@ -30,4 +30,20 @@
     </Content>
   </ItemGroup>
 
+  <!-- Debug 构建后：复制 C 主程序、瘦身工具、font 与 build，删除 bin\Debug 后重新生成也会附带这些，输出目录可直接运行 -->
+  <Target Name="CopyCExeAndSubsetTool" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <PropertyGroup>
+      <_DebugRoot>$(MSBuildThisFileDirectory)..</_DebugRoot>
+    </PropertyGroup>
+    <Copy SourceFiles="$(_DebugRoot)\NaoFu WT Customize Font 2.10.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(_DebugRoot)\NaoFu WT Customize Font 2.10.exe')" />
+    <Copy SourceFiles="$(_DebugRoot)\nf_subset_tool.exe" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" Condition="Exists('$(_DebugRoot)\nf_subset_tool.exe')" />
+    <!-- 复制 font 目录（font\source、font\custom、font\builtin 等），保证 font\source\fonts.vromfs.bin 存在 -->
+    <ItemGroup Condition="Exists('$(_DebugRoot)\font')">
+      <_FontFiles Include="$(_DebugRoot)\font\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_FontFiles)" DestinationFiles="@(_FontFiles->'$(OutputPath)font\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" Condition="Exists('$(_DebugRoot)\font')" />
+    <!-- 确保存在 build 目录，C 程序会在此下创建项目子目录 -->
+    <MakeDir Directories="$(OutputPath)build" Condition="!Exists('$(OutputPath)build')" />
+  </Target>
+
 </Project>
